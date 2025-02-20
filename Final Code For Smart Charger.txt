@@ -1,0 +1,44 @@
+import machine
+import utime
+
+button_pin = machine.Pin(1, machine.Pin.IN, machine.Pin.PULL_DOWN)
+relay_pin = machine.Pin(28, machine.Pin.OUT)
+
+charging_duration = 0
+max_charging_duration = 8 * 3600
+
+button_pressed = False
+
+def button_callback(pin):
+    global button_pressed
+    button_pressed = True
+
+button_pin.irq(trigger=machine.Pin.IRQ_FALLING, handler=button_callback)
+
+def charge():
+    global charging_duration
+    relay_pin.on()
+    print("Charging...")
+    utime.sleep(charging_duration)
+    relay_pin.off()
+    print("Charging complete.")
+
+while True:
+    if button_pressed == 1:
+        charging_duration += 2 * 3600
+    elif button_pressed == 2:
+        charging_duration += 4 * 3600
+    elif button_pressed == 3:
+        charging_duration += 6 * 3600
+    elif button_pressed == 4:
+        charging_duration += 8 * 3600
+
+    if charging_duration > max_charging_duration:
+        charging_duration = 0
+    print(f"Charging duration set to {charging_duration/3600} hours.")
+    button_pressed = False
+
+    if charging_duration > 0:
+        charge()
+
+    utime.sleep(1.5)

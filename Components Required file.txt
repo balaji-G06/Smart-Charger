@@ -1,0 +1,11 @@
+Components required...!!
+
+1.Raspberry pico w 
+2.Relay modules
+3.RTC modules 
+4.Charger 
+5.Universal charger wire cable 
+6.push button *5
+7.timer controller 
+8.bread board 
+9.connecting wires
